@@ -5,9 +5,6 @@ const server = require('../server.js');
 
 chai.use(chaiHttp);
 
-//
-const requester = chai.request(server).keepOpen();
-//
 
 let Translator = require('../components/translator.js');
 const translator = new Translator();
@@ -15,7 +12,7 @@ const translator = new Translator();
 
 suite('Functional Tests', () => {
   test("Translation with text and locale fields", done => {
-    requester
+    chai.request(server)
     .post("/api/translate")
     .send({text:"Dr. Thomas", locale:"american-to-british"})
     .end((err, res) => {
@@ -27,7 +24,7 @@ suite('Functional Tests', () => {
   });
 
   test("Translation with text and invalid locale field", done => {
-    requester
+    chai.request(server)
     .post("/api/translate")
     .send({text:"Dr. Thomas", locale:"test"})
     .end((err, res) => {
@@ -37,7 +34,7 @@ suite('Functional Tests', () => {
   });
 
   test("Translation with missing text field", done => {
-    requester
+    chai.request(server)
     .post("/api/translate")
     .send({locale:"british-to-american"})
     .end((err, res) => {
@@ -47,7 +44,7 @@ suite('Functional Tests', () => {
   });
 
   test("Translation with missing locale field", done => {
-    requester
+    chai.request(server)
     .post("/api/translate")
     .send({text:"test"})
     .end((err, res) => {
@@ -57,7 +54,7 @@ suite('Functional Tests', () => {
   });
 
   test("Translation with empty text", done => {
-    requester
+    chai.request(server)
     .post("/api/translate")
     .send({text:"", locale:"american-to-british"})
     .end((err, res) => {
@@ -67,7 +64,7 @@ suite('Functional Tests', () => {
   });
 
   test("Translation with text that needs no translation", done => {
-    requester
+    chai.request(server)
     .post("/api/translate")
     .send({text:"test", locale:"american-to-british"})
     .end((err, res) => {
